@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-def get_tf_idf(data_path):
+def get_tf_idf(data_path, path_out):
     # get pre_compute data from file
     dirname = os.path.dirname(__file__)
     with open(os.path.join(dirname, '../datasets/20news-bydate/words_idfs.txt'), 'r') as f:
@@ -39,12 +39,17 @@ def get_tf_idf(data_path):
             data_tf_idf.append((label, doc_id, sparse_rep))
         
         dirname = os.path.dirname(__file__)
-        path = os.path.join(dirname, '../datasets/20news-bydate/data_tf_idf.txt')
-        with open(path, 'w') as f:
+        
+        with open(path_out, 'w') as f:
             f.write('\n'.join([str(label) + '<fff>' + str(doc_id) + '<fff>' + sparse_rep for label, doc_id, sparse_rep in data_tf_idf]))
 
 
 if __name__ == '__main__':
     dirname = os.path.dirname(__file__)
-    path = os.path.join(dirname, '../datasets/20news-bydate/20news-test-processed.txt')
-    get_tf_idf(path)
+    path = os.path.join(dirname, '../datasets/20news-bydate/20news-full-processed.txt')
+    get_tf_idf(path, path_out = os.path.join(dirname, '../datasets/20news-bydate/20news-full-processed_tf_idf.txt'))
+    get_tf_idf('../datasets/20news-bydate/20news-train-processed.txt', 
+                '../datasets/20news-bydate/20news-train-processed_tf_idf.txt')
+    get_tf_idf('../datasets/20news-bydate/20news-test-processed.txt',
+                '../datasets/20news-bydate/20news-test-processed_tf_idf.txt')
+

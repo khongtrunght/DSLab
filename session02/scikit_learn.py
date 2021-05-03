@@ -33,7 +33,7 @@ def load_data(data_path):
         _data.append(r_d)
         labels.append(label)
         
-    return _data, labels
+    return np.array(_data) , np.array(labels)
 
 def clustering_with_KMeans():
     global this_path
@@ -60,20 +60,20 @@ def compute_accuracy(predicted_y, expected_y):
     return accuracy
 
 def classifying_with_linear_SVMs():
-    train_X, train_Y = load_data('../datasets/20news-bydate/data_tf_idf.txt')
+    train_X, train_Y = load_data('../datasets/20news-bydate/20news-train-processed_tf_idf.txt')
     classifier = LinearSVC(
         C = 10.0,
         tol = 0.001,
         verbose = True
     )
     classifier.fit(train_X, train_Y)
-    test_X, test_Y = load_data('../datasets/20news-bydate/data_tf_idf.txt')
+    test_X, test_Y = load_data('../datasets/20news-bydate/20news-test-processed_tf_idf.txt')
     predicted_Y = classifier.predict(test_X)
     accuracy = compute_accuracy(predicted_y = predicted_Y, expected_y = test_Y)
     print("Accuracy:", accuracy)
 
 def classifying_with_kernel_SVMs():
-    train_X, train_Y = load_data('../datasets/20news-bydate/data_tf_idf.txt')
+    train_X, train_Y = load_data('../datasets/20news-bydate/20news-train-processed_tf_idf.txt')
     classifier = SVC(
         C=50.0,
         kernel = 'rbf',
@@ -83,7 +83,7 @@ def classifying_with_kernel_SVMs():
     )
     classifier.fit(train_X, train_Y)
     
-    test_X, test_Y = load_data('../datasets/20news-bydate/data_tf_idf.txt')
+    test_X, test_Y = load_data('../datasets/20news-bydate/20news-test-processed_tf_idf.txt')
     predicted_Y = classifier.predict(test_X)
     accuracy = compute_accuracy(predicted_y=predicted_Y, expected_y=test_Y)
     print("Accuracy:", accuracy)
@@ -91,4 +91,5 @@ def classifying_with_kernel_SVMs():
 if __name__ == '__main__':
     this_path = os.path.dirname(__file__)
     # clustering_with_KMeans()
-    classifying_with_kernel_SVMs()
+    # classifying_with_kernel_SVMs()
+    classifying_with_linear_SVMs()

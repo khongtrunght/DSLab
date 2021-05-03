@@ -173,7 +173,7 @@ def main():
     global this_path
     this_path = os.path.dirname(__file__)
     data_path = os.path.join(
-        this_path, '../datasets/20news-bydate/data_tf_idf.txt')
+        this_path, '../datasets/20news-bydate/20news-full-processed_tf_idf.txt')
     kmean = Kmeans(num_clusters=20)
     kmean.load_data(
         data_path=data_path)
