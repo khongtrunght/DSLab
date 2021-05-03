@@ -1,4 +1,4 @@
-# DSLab-session01
+# DSLab-session02
 
 ## Getting Started
 
