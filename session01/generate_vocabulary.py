@@ -2,7 +2,8 @@ import os
 from typing import DefaultDict
 import numpy as np
 
-
+dirname = os.path.dirname(__file__)
+WORD_IDF_FILE = os.path.join(dirname, '../datasets/20news-bydate/words_idfs.txt')
 
 def generate_vocabulary(data_path):
     def compute_idf(df, corpus_size):
@@ -27,17 +28,10 @@ def generate_vocabulary(data_path):
     words_idf.sort(key = lambda  word: -word[1])
     print('Vocabulary size: {}'.format(len(words_idf)))
     global dirname
-    dirname = os.path.dirname(__file__)
-    words_idfs_path = os.path.join(dirname, '../datasets/20news-bydate/words_idfs.txt')
+    
+    words_idfs_path = WORD_IDF_FILE
     with open(words_idfs_path, 'w') as f:
         f.write('\n'.join([word + '<fff>' + str(idf) for word, idf in words_idf]))
-
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

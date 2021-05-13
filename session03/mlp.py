@@ -92,14 +92,14 @@ class DataReader:
             self._data, self._labels = self._data[indices], self._labels[indices]
         return self._data[start:end], self._labels[start:end]
 
-def load_dataset():
+def load_dataset(train_path, test_path):
     train_data_reader = DataReader(
-        data_path='../datasets/20news-bydate/20news-train-processed_tf_idf.txt',
+        data_path= train_path,
         batch_size=50,
         vocab_size= vocab_size
     )
     test_data_reader = DataReader(
-        data_path='../datasets/20news-bydate/20news-test-processed_tf_idf.txt',
+        data_path= test_path,
         batch_size=50,
         vocab_size= vocab_size
     )
@@ -126,11 +126,14 @@ def restore_parameters(name, epoch):
     return value
 
 if __name__ == '__main__':
+    WORD_IDF_FILE = '../datasets/20news-bydate/words_idfs.txt'
+    TRAIN_TF_IDF_FILE = '../datasets/20news-bydate/20news-train-processed_tf_idf.txt'
+    TEST_TF_IDF_FILE = '../datasets/20news-bydate/20news-test-processed_tf_idf.txt'
     NUM_CLASSES = 20
     tf.compat.v1.disable_eager_execution()
 
     #Create computational graph
-    with open('../datasets/20news-bydate/words_idfs.txt') as f:
+    with open(WORD_IDF_FILE) as f:
         vocab_size = len(f.read().splitlines())
 
     mlp = MLP(
@@ -141,8 +144,8 @@ if __name__ == '__main__':
     train_op = mlp.trainer(loss = loss, learning_rate = 0.1)
 
     with tf.compat.v1.Session() as sess:
-        train_data_reader, test_data_reader = load_dataset()
-        step, MAX_STEP = 0,10 #1000**2   
+        train_data_reader, test_data_reader = load_dataset(TRAIN_TF_IDF_FILE, TEST_TF_IDF_FILE)
+        step, MAX_STEP = 0,3000 #1000**2   
 
         sess.run(tf.compat.v1.global_variables_initializer())
         while step < MAX_STEP:

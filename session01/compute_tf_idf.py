@@ -1,10 +1,12 @@
 import os
 import numpy as np
 
+dirname = os.path.dirname(__file__)
+WORD_IDF_FILE = os.path.join(dirname, '../datasets/20news-bydate/words_idfs.txt')
+
 def get_tf_idf(data_path, path_out):
     # get pre_compute data from file
-    dirname = os.path.dirname(__file__)
-    with open(os.path.join(dirname, '../datasets/20news-bydate/words_idfs.txt'), 'r') as f:
+    with open(WORD_IDF_FILE, 'r') as f:
         words_idfs = [(line.split('<fff>')[0], float(line.split('<fff>')[1]))
                       for line in f.read().splitlines()]
         word_IDs = dict([(word, index) for
