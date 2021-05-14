@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
     with tf.compat.v1.Session() as sess:
         train_data_reader, test_data_reader = load_dataset(TRAIN_TF_IDF_FILE, TEST_TF_IDF_FILE)
-        step, MAX_STEP = 0,3000 #1000**2   
+        step, MAX_STEP = 0,10000 #1000**2   
 
         sess.run(tf.compat.v1.global_variables_initializer())
         while step < MAX_STEP:
@@ -160,13 +160,14 @@ if __name__ == '__main__':
             step += 1
             print('step: {}, loss: {}'.format(step, loss_eval))
 
-            trainable_variables = tf.compat.v1.trainable_variables()
-            for variable in trainable_variables:
-                save_parameter(
-                    name = variable.name,
-                    value = variable.eval(),
-                    epoch = train_data_reader._num_epoch
-                )
+            if (train_data_reader._batch_id == 0):
+                trainable_variables = tf.compat.v1.trainable_variables()
+                for variable in trainable_variables:
+                    save_parameter(
+                        name = variable.name,
+                        value = variable.eval(),
+                        epoch = train_data_reader._num_epoch
+                    )
 
     #Evaluate the model on test set:
     test_data_reader = DataReader(
@@ -175,7 +176,7 @@ if __name__ == '__main__':
         vocab_size = vocab_size
     )
     with tf.compat.v1.Session() as sess:
-        epoch = 10
+        epoch = train_data_reader._num_epoch
         trainable_variables = tf.compat.v1.trainable_variables()
         for variable in trainable_variables:
             saved_value = restore_parameters(variable.name, epoch)
